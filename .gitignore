@@ -1,0 +1,5 @@
+**/__pycache__/
+secret/
+log.txt
+logQueue.json
+misc/*
