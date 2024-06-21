@@ -104,7 +104,7 @@ async def save_Richiesta(update: Update, context: ContextTypes.DEFAULT_TYPE): # 
             [ InlineKeyboardButton('✅ Aggiunto',callback_data=f'request:added:{req.id}') ]
         ]
         
-        for admin in load_configs["BOT_ADMINS"]:
+        for admin in load_configs()["BOT_ADMINS"]:
             try:
                 admin_messages = (
                     await context.bot.send_message(
@@ -152,7 +152,7 @@ async def richiesta_accettata(update: Update, context: ContextTypes.DEFAULT_TYPE
         chat_id=mex.user_id
     )
     
-    for admin in load_configs["BOT_ADMINS"]:
+    for admin in load_configs()["BOT_ADMINS"]:
         await context.bot.send_message (
             chat_id=admin,
             text=f"La richiesta #req{req.id} è stata accettata dall'admin {query.from_user.name}."
@@ -182,7 +182,7 @@ async def richiesta_rifiutata(update: Update, context: ContextTypes.DEFAULT_TYPE
         reply_to_message_id=mex.message_id,
     )
 
-    for admin in load_configs["BOT_ADMINS"]:
+    for admin in load_configs()["BOT_ADMINS"]:
         await context.bot.send_message (
             chat_id=admin,
             text=f"La richiesta #req{req.id} è stata rifiutata dall'admin {query.from_user.name}."
@@ -211,7 +211,7 @@ async def richiesta_aggiunta(update: Update, context: ContextTypes.DEFAULT_TYPE)
         reply_to_message_id=mex.message_id # TODO Inserire in questo messaggio il comando in cui è disponibile.
     )
     
-    for admin in load_configs["BOT_ADMINS"]:
+    for admin in load_configs()["BOT_ADMINS"]:
         await context.bot.send_message (
             chat_id=admin,
             text=f"La richiesta #req{req.id} è stata segnalta come aggiunta dall'admin {query.from_user.name}."

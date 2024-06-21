@@ -43,7 +43,7 @@ def main():
                 1: [MessageHandler(filters=~filters.COMMAND, callback=richieste.cat_e_ricGif)],
                 2: [MessageHandler(filters=filters.ANIMATION, callback=richieste.save_Richiesta)]
             },
-            fallbacks=[CommandHandler('cancel',cancel)]
+            fallbacks=[CommandHandler('cancel',cancel('richiesta'))]
         )
     )
 

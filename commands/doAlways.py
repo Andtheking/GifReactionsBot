@@ -6,13 +6,14 @@ from utils.db import queryGetFirst, queryNoReturn
 
 from models.models import Utente
 from utils.jsonUtils import load_configs
+from telegram.constants import ChatType
 
 # Questa funzione sarà eseguita prima di tutte le altre e per ogni messaggio che non è un comando
 async def doAlways(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.effective_message
     
     if load_configs()['test']:
-        if not message.chat_id in load_configs()['enabled_groups']:
+        if message.chat.type != ChatType.PRIVATE and not message.chat_id in load_configs()['enabled_groups']:
             await message.chat.leave()
             return
     
