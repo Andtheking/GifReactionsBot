@@ -6,12 +6,27 @@ CANALE_LOG = load_configs()['canale_log'] # Se vuoi mandare i log del bot in un 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE): # /start
     await doAlways(update,context)
     
-    await update.message.reply_text(f'Hai avviato il bot, congrats')
+    await update.message.reply_text(f'Benvenuto! Usa /help@{context.bot.username} per scoprire come funziona il bot!')
 
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE): # /help
     await doAlways(update,context)
     
-    await update.message.reply_text("aiuto")
+    await update.message.reply_text("""
+Provalo in un gruppo! 
+Interazioni a 2 (da usare in risposta a qualcuno):
+
+- /hit
+- /hug
+- /patpat
+- /punch
+- /slap
+
+Reazioni (gif con una sola persona):
+
+- /cry
+- /sip
+- /teehee
+""")
 
 # Segnala quando il bot crasha, con motivo del crash
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
