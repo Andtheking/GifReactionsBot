@@ -17,7 +17,7 @@ async def check_for_couple_gif(message: Message):
 
 async def singleGif(update:Update, context: ContextTypes.DEFAULT_TYPE, gif_type:str):
     if update.effective_message.from_user.username == "@KazumaRuba":
-        await update.message.reply_text("suca")
+        await update.effective_message.reply_text("suca")
 
     m = await update.effective_message.reply_text("Processing...")
     testo = update.effective_message.text
