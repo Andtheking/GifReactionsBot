@@ -46,7 +46,7 @@ class Gif(BaseModel):
         
         
         print (f"{self.comando} fontSize: {str(fontSize)} w x h {gifWidth} x {gifHeight}")
-        font = ImageFont.truetype("arial.ttf",fontSize)
+        font = ImageFont.truetype(str((Path(__file__).parent.parent / 'misc' / 'arial.ttf').resolve()),fontSize)
         
         nomi_nuovi = []
         coord_nuove = []
