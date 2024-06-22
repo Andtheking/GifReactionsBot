@@ -31,7 +31,7 @@ class Gif(BaseModel):
         return self.percorso.split("\\")[-1]
     
     async def stampaNomi(self, *nomi, test = False) -> str:
-        im = Image.open((Path('misc\\') / self.percorso.replace('\\','/')).resolve())
+        im = Image.open((Path('misc') / self.percorso.replace('\\','/')).resolve())
         # A list of the frames to be outputted
         frames = []
         
