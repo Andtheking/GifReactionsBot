@@ -2,9 +2,12 @@ from peewee import *
 from PIL import Image, ImageFont, ImageDraw, ImageSequence
 import io
 from uuid import uuid4
+from pathlib import Path
 
 # Connettiamo al database SQLite
-db = SqliteDatabase('secret\\Database.db')
+
+db_path = (Path(__file__).parent.parent / 'secret' / 'Database.db').resolve()
+db = SqliteDatabase(db_path)
 
 class BaseModel(Model):
     class Meta:

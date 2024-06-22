@@ -12,6 +12,9 @@ from telegram.constants import ChatType
 async def doAlways(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.effective_message
     
+    if message.chat.id == load_configs()['canale_log']:
+        return
+    
     if load_configs()['test']:
         if message.chat.type != ChatType.PRIVATE and not message.chat_id in load_configs()['enabled_groups']:
             await message.chat.leave()
