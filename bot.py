@@ -84,12 +84,12 @@ def main():
     ]
     
     for command in couple_command:
-        handlers[command] = CommandHandler(
-            command, lambda update,context,cmd=command: gifs.coupleGif(update,context,cmd)
+        handlers[command] = MessageHandler(
+            filters=filters.Regex(re.compile(r"^[!.\/]g"+command+r"$",re.IGNORECASE)), callback=lambda update,context,cmd=command: gifs.coupleGif(update,context,cmd)
         )
     for command in single_command:
-        handlers[command] = CommandHandler(
-            command, lambda update,context, cmd = command: gifs.singleGif(update,context,cmd)
+        handlers[command] = MessageHandler(
+            filters=filters.Regex(re.compile(r"^[!.\/]g"+command+r"$",re.IGNORECASE)), callback=lambda update,context,cmd=command: gifs.singleGif(update,context,cmd)
         )
             
     for v in handlers.values():
