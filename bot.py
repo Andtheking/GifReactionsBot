@@ -47,8 +47,8 @@ def main():
     application = Application.builder().token(TOKEN).build() # Se si vuole usare la PicklePersistance bisogna aggiungere dopo .token(TOKEN) anche .persistance(OGGETTO_PP)
 
     handlers = {
-        "start": MessageHandler(filters.Regex(re.compile(r"^[!.\/]start$",re.IGNORECASE)),start),
-        "help": MessageHandler(filters.Regex(re.compile(r"^[!.\/]help$",re.IGNORECASE)),help),
+        "start": MessageHandler(filters.Regex(re.compile(r"^[!.\/]start",re.IGNORECASE)),start),
+        "help": MessageHandler(filters.Regex(re.compile(r"^[!.\/]help",re.IGNORECASE)),help),
     }
     
     application.add_handler(
@@ -100,11 +100,11 @@ def main():
     
     for command in couple_command:
         handlers[command] = MessageHandler(
-            filters=filters.Regex(re.compile(r"^[!.\/]g"+command+r"$",re.IGNORECASE)), callback=lambda update,context,cmd=command: gifs.coupleGif(update,context,cmd)
+            filters=filters.Regex(re.compile(r"^[!.\/]g"+command,re.IGNORECASE)), callback=lambda update,context,cmd=command: gifs.coupleGif(update,context,cmd)
         )
     for command in single_command:
         handlers[command] = MessageHandler(
-            filters=filters.Regex(re.compile(r"^[!.\/]g"+command+r"$",re.IGNORECASE)), callback=lambda update,context,cmd=command: gifs.singleGif(update,context,cmd)
+            filters=filters.Regex(re.compile(r"^[!.\/]g"+command,re.IGNORECASE)), callback=lambda update,context,cmd=command: gifs.singleGif(update,context,cmd)
         )
             
     for v in handlers.values():
