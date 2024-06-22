@@ -46,7 +46,7 @@ class Gif(BaseModel):
         fontSize = self.fontsize
         
         
-        print (f"{self.comando} fontSize: {str(fontSize)} w x h {gifWidth} x {gifHeight}")
+        print (f"{self.comando}{self.gif_type_id} fontSize: {str(fontSize)} w x h {gifWidth} x {gifHeight}")
         font = ImageFont.truetype(str((Path(__file__).parent.parent / 'misc' / 'arial.ttf').resolve()),fontSize)
         
         nomi_nuovi = []
