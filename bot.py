@@ -15,17 +15,17 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE): # /help
 Provalo in un gruppo! 
 Interazioni a 2 (da usare in risposta a qualcuno):
 
-- /hit
-- /hug
-- /patpat
-- /punch
-- /slap
+- /ghit
+- /ghug
+- /gpatpat
+- /gpunch
+- /gslap
 
 Reazioni (gif con una sola persona):
 
-- /cry
-- /sip
-- /teehee
+- /gcry
+- /gsip
+- /gteehee
 """)
 
 # Segnala quando il bot crasha, con motivo del crash
