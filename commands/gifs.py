@@ -52,7 +52,17 @@ async def coupleGif(update:Update, context: ContextTypes.DEFAULT_TYPE, gif_type:
     
     
 async def make_gif(type_gif, message: Message, nomi: tuple[str], text = ""):
-    chosen_gif: Gif = Gif.select().join(Comando).where(Comando.comando == type_gif).order_by(fn.Random()).limit(1).first()
+    x = re.search('type:(.+)',text)
+    if x:
+        tipo = x.group(1)
+    
+    text = re.sub('type:(.+)','',text).strip()
+    if x:
+        chosen_gif: Gif = Gif.select().join(Comando).where((Comando.comando == type_gif) & (Gif.gif_type_id == int(tipo))).first()
+   
+    if not x or not chosen_gif:
+        chosen_gif: Gif = Gif.select().join(Comando).where(Comando.comando == type_gif).order_by(fn.Random()).limit(1).first()
+        
     
 
     modified_names = []
@@ -101,8 +111,9 @@ async def make_gif(type_gif, message: Message, nomi: tuple[str], text = ""):
                 await message.chat.send_animation(already,caption=text)
 
 def alreadySent(gif, *nomi) -> str:
-    test: Optimize = Optimize.select().where(Optimize.gif == gif & Optimize.names == toJSON(list(nomi)))
-    
+    asasd = toJSON(list(nomi))
+    test: Optimize = Optimize.select().where((Optimize.gif == gif) & (Optimize.names == toJSON(list(nomi)))).first()
+
     if test:
         return fromJSON(test.animation)
     return None

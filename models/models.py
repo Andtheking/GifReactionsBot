@@ -26,6 +26,7 @@ class Gif(BaseModel):
     fontsize = IntegerField()
     stroke = IntegerField()
     comando = ForeignKeyField(Comando, backref='gifs')
+    gif_type_id = IntegerField()
     
     def getName(self) -> str:
         return self.percorso.split("\\")[-1]
@@ -159,6 +160,7 @@ class Gif(BaseModel):
                 return frames / duration * 1000
         return None
 
+
 class Rect(BaseModel):
     A_x = IntegerField()
     A_y = IntegerField()
@@ -172,7 +174,7 @@ class Request(BaseModel):
     gif = TextField()
     status = IntegerField()
     user_id = IntegerField()
-    category = ForeignKeyField(Comando, backref='richieste')
+    category = TextField()
 
 class RequestMessages(BaseModel):
     message_id = IntegerField()
@@ -187,7 +189,6 @@ class Optimize(BaseModel):
     animation = TextField()
     gif = ForeignKeyField(Gif)
     names = TextField()
-    pass
 
 
 def insert_data_by_json(json_data):
@@ -217,9 +218,18 @@ def insert_data_by_json(json_data):
 
 if __name__ == '__main__':
     import asyncio
+   
+   
+    for comando in Comando.select():
+        id = 1
+        gifs: list[Gif] = Gif.select().where(Gif.comando == comando).order_by(Gif.id)
+        for gif in gifs: 
+            gif.gif_type_id = id
+            gif.save()
+            id += 1
+   
     
     # db.connect()
-    db.create_tables([Comando])
     # hug_gifs: list[Gif] = Gif.select().join(Comando).where(Comando.comando == 'hug')
     
     # g = hug_gifs[0]

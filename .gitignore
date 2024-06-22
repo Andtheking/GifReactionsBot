@@ -3,3 +3,5 @@ secret/
 log.txt
 logQueue.json
 misc/*
+models/migrate*
+*.sql

@@ -38,7 +38,7 @@ if __name__ == "__main__":
             t = input("Tipo della gif? ")
 
         comando = Comando.select().where(Comando.comando == t).first()
-        new_gif_id = Gif.select().join(Comando).order_by(Gif.id.desc()).first().id
+        last_gif_id = Gif.select().join(Comando).where(Comando.comando == comando).order_by(Gif.gif_type_id.desc()).first().gif_type_id
         
         p = input("Percorso della gif? ")
         while not os.path.isfile(p) or not (p[-1:-5:-1] == "fig." or p[-1:-5:-1] == "4pm."):
@@ -54,17 +54,18 @@ if __name__ == "__main__":
         p = str(path.joinpath("working_dir/converted.gif").resolve())
         
         super_big_g = Gif(
-            percorso=f"gifs/{t}/{t}{new_gif_id + 1}.gif",
+            percorso=f"gifs/{t}/{t}{last_gif_id + 1}.gif",
             fontsize=33,
             stroke=2,
-            comando=t
+            comando=comando,
+            gif_type_id=last_gif_id+1
         )
         
         
         print("Ok ora prendi le coordinate")
         c = [Rect(gif=super_big_g, A_x = k[0], A_y = k[1], B_x = k[2], B_y = k[3]) for k in gif_coordinates.main(p)]
         
-        path = str(path.joinpath(f"gifs/{t}/{t}{new_gif_id + 1}.gif").resolve())
+        path = str(path.joinpath(f"gifs/{t}/{t}{last_gif_id + 1}.gif").resolve())
         os.rename(p,path)
         
         super_big_g.save()
