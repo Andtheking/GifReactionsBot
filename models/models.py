@@ -160,6 +160,15 @@ class Gif(BaseModel):
                 return frames / duration * 1000
         return None
 
+    def _fit_text_in_rectangle(self, text, font,fontSize, rectangle_width, rectangle_height, d: ImageDraw):
+        w = d.textlength(text,
+                        font=font)
+        while text and (w > rectangle_width):
+            text = text[:-1]  # Rimuovi l'ultimo carattere del testo finché non rientra nel rettangolo
+            w = d.textlength(text,
+                        font=font)
+
+        return text
 
 class Rect(BaseModel):
     A_x = IntegerField()
