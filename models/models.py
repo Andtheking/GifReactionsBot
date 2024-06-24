@@ -224,18 +224,41 @@ def insert_data_by_json(json_data):
                         B_y=coord['fine']['py/tuple'][1]
                     )
                 
-
+def delete_gif(gif, type_id):
+    
+    to_delete = Gif.select().join(Comando).where((Gif.gif_type_id == type_id) & (Comando.comando == gif))
+    optimize_associated = Optimize.select().where(Optimize.gif == to_delete)
+    rects = Rect.select().where(Rect.gif == to_delete)
+    
+    for a in to_delete:
+        a.delete_instance(recursive=True)
+    
+    
 if __name__ == '__main__':
     import asyncio
+    
+    try:
+        prompt = input('Che gif vuoi cancellare? Scrivi "tipo numero" --> ').split(" ")
+    except:
+        print("Esplodo.")
+        quit()
+        
+    try:
+        input(f"Sicuro? Stai cancellando {prompt[0]}{int(prompt[1])} eh... Premi invio se sei sicuro. ")
+        delete_gif(prompt[0],int(prompt[1]))
+    except:
+        print("Esplodo 2")
+        quit()
    
    
-    for comando in Comando.select():
-        id = 1
-        gifs: list[Gif] = Gif.select().where(Gif.comando == comando).order_by(Gif.id)
-        for gif in gifs: 
-            gif.gif_type_id = id
-            gif.save()
-            id += 1
+    # # Serviva per incrementare il campo gif_type_id quando ho aggiunto il campo nuovo.
+    # for comando in Comando.select():
+    #     id = 1
+    #     gifs: list[Gif] = Gif.select().where(Gif.comando == comando).order_by(Gif.id)
+    #     for gif in gifs: 
+    #         gif.gif_type_id = id
+    #         gif.save()
+    #         id += 1
    
     
     # db.connect()

@@ -8,7 +8,7 @@ async def check_for_couple_gif(message: Message):
     if message.reply_to_message.from_user == message.from_user:
         await message.reply_text("Non usare il comando con te stesso...")
         return False
-    if message.reply_to_message.from_user.username == "AndsTestBot":
+    if message.reply_to_message.from_user.username == config.BOT_USERNAME:
         await message.reply_text("Non usare il comando su di me!")
         return False
     
@@ -16,7 +16,7 @@ async def check_for_couple_gif(message: Message):
 
 
 async def singleGif(update:Update, context: ContextTypes.DEFAULT_TYPE, gif_type:str):
-    if update.effective_message.from_user.username == "@KazumaRuba":
+    if update.effective_message.from_user.id == 872910322:
         await update.effective_message.reply_text("suca")
 
     m = await update.effective_message.reply_text("Processing...")

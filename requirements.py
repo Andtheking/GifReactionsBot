@@ -40,6 +40,16 @@ from models.models import Request, RequestMessages, Gif, Comando, Utente, Rect, 
 from utils.jsonUtils import load_configs, toJSON, fromJSON
 from utils.log import log
 
+# Constants
+class Config:
+    def __init__(self):
+        self.TOKEN = load_configs()['token']  # TOKEN DEL BOT
+        self.CANALE_LOG = load_configs()['canale_log'] # Se vuoi mandare i log del bot in un canale telegram, comodo a parere mio.
+        self.BOT_INFO = get(f'https://api.telegram.org/bot{self.TOKEN}/getMe')
+        self.BOT_USERNAME = fromJSON(self.BOT_INFO.text)['result']['username']
+        
+config = Config()
+
 # Commands
 from commands.doAlways import doAlways
 import commands.richieste as richieste
@@ -48,4 +58,3 @@ import commands.gifs as gifs
 # Jobs
 from jobs.send_logs import send_logs_channel
 from jobs.initialize import initialize
-

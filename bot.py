@@ -1,7 +1,6 @@
 from requirements import *
 
-TOKEN = load_configs()['token']  # TOKEN DEL BOT
-CANALE_LOG = load_configs()['canale_log'] # Se vuoi mandare i log del bot in un canale telegram, comodo a parere mio.
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE): # /start
     await doAlways(update,context)
@@ -40,16 +39,14 @@ def cancel(action: str):
     return thing
 
 
-BOT_INFO = get(f'https://api.telegram.org/bot{TOKEN}/getMe')
-BOT_USERNAME = fromJSON(BOT_INFO.text)['result']['username']
 
-def message_handler_as_command(command):
-    return filters.Regex(re.compile(rf"^[!.\/]{command}(@{BOT_USERNAME})?$",re.IGNORECASE))
+def message_handler_as_command(command, strict=True):
+    return filters.Regex(re.compile(rf"^[!.\/]{command}(@{config.BOT_USERNAME})?{'$' if strict else ''}",re.IGNORECASE))
 
 
 def main():
     # Avvia il bot
-    application = Application.builder().token(TOKEN).build() # Se si vuole usare la PicklePersistance bisogna aggiungere dopo .token(TOKEN) anche .persistance(OGGETTO_PP)
+    application = Application.builder().token(config.TOKEN).build() # Se si vuole usare la PicklePersistance bisogna aggiungere dopo .token(TOKEN) anche .persistance(OGGETTO_PP)
 
 
     handlers = {
@@ -106,11 +103,11 @@ def main():
     
     for command in couple_command:
         handlers[command] = MessageHandler(
-            filters=message_handler_as_command('g'+command), callback=lambda update,context,cmd=command: gifs.coupleGif(update,context,cmd)
+            filters=message_handler_as_command('g'+command, False), callback=lambda update,context,cmd=command: gifs.coupleGif(update,context,cmd)
         )
     for command in single_command:
         handlers[command] = MessageHandler(
-            filters=message_handler_as_command('g'+command), callback=lambda update,context,cmd=command: gifs.singleGif(update,context,cmd)
+            filters=message_handler_as_command('g'+command, False), callback=lambda update,context,cmd=command: gifs.singleGif(update,context,cmd)
         )
             
     for v in handlers.values():
