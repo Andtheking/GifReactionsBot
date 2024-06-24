@@ -40,25 +40,31 @@ def cancel(action: str):
     return thing
 
 
+BOT_INFO = get(f'https://api.telegram.org/bot{TOKEN}/getMe')
+BOT_USERNAME = fromJSON(BOT_INFO.text)['result']['username']
+
+def message_handler_as_command(command):
+    return filters.Regex(re.compile(rf"^[!.\/]{command}(@{BOT_USERNAME})?$",re.IGNORECASE))
 
 
 def main():
     # Avvia il bot
     application = Application.builder().token(TOKEN).build() # Se si vuole usare la PicklePersistance bisogna aggiungere dopo .token(TOKEN) anche .persistance(OGGETTO_PP)
 
+
     handlers = {
-        "start": MessageHandler(filters.Regex(re.compile(r"^[!.\/]start",re.IGNORECASE)),start),
-        "help": MessageHandler(filters.Regex(re.compile(r"^[!.\/]help",re.IGNORECASE)),help),
+        "start": MessageHandler(message_handler_as_command('start'),start),
+        "help": MessageHandler(message_handler_as_command('help'),help),
     }
     
     application.add_handler(
         ConversationHandler(
-            entry_points = [CommandHandler("request",richieste.request)],
+            entry_points = [MessageHandler(message_handler_as_command('request'),richieste.request)],
             states={
                 1: [MessageHandler(filters=~filters.COMMAND, callback=richieste.cat_e_ricGif)],
                 2: [MessageHandler(filters=filters.ANIMATION, callback=richieste.save_Richiesta)]
             },
-            fallbacks=[CommandHandler('cancel',cancel('richiesta'))]
+            fallbacks=[MessageHandler(message_handler_as_command('cancel'),cancel('richiesta'))]
         )
     )
 
@@ -100,11 +106,11 @@ def main():
     
     for command in couple_command:
         handlers[command] = MessageHandler(
-            filters=filters.Regex(re.compile(r"^[!.\/]g"+command,re.IGNORECASE)), callback=lambda update,context,cmd=command: gifs.coupleGif(update,context,cmd)
+            filters=message_handler_as_command('g'+command), callback=lambda update,context,cmd=command: gifs.coupleGif(update,context,cmd)
         )
     for command in single_command:
         handlers[command] = MessageHandler(
-            filters=filters.Regex(re.compile(r"^[!.\/]g"+command,re.IGNORECASE)), callback=lambda update,context,cmd=command: gifs.singleGif(update,context,cmd)
+            filters=message_handler_as_command('g'+command), callback=lambda update,context,cmd=command: gifs.singleGif(update,context,cmd)
         )
             
     for v in handlers.values():

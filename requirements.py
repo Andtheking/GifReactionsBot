@@ -28,6 +28,8 @@ from telegram.constants import (
 
 # Librerie esterne
 import re
+from requests import get
+
 
 # Moduli interni 
 
