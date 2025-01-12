@@ -93,6 +93,19 @@ def main():
             pattern="annulla_richiesta:.+"
         )
     )
+    
+    application.add_handler(
+        CallbackQueryHandler(
+            callback=gifs.ask_callback,
+            pattern=r"accept_(?P<chat_id>-?\d+)_(?P<richiesta_id>\d+)"
+        )
+    )
+    application.add_handler(
+        CallbackQueryHandler(
+            callback=gifs.ask_callback,
+            pattern=r"reject_(?P<chat_id>-?\d+)_(?P<richiesta_id>\d+)"
+        )
+    )
 
     couple_command = [
         "slap","hug","patpat","punch", "hit"
@@ -103,11 +116,15 @@ def main():
     
     for command in couple_command:
         handlers[command] = MessageHandler(
-            filters=message_handler_as_command('g'+command, False), callback=lambda update,context,cmd=command: gifs.coupleGif(update,context,cmd)
+            filters=message_handler_as_command('g'+command, False), 
+            callback=lambda update,context,cmd=command: gifs.coupleGif(update,context,cmd),
+            block = False
         )
     for command in single_command:
         handlers[command] = MessageHandler(
-            filters=message_handler_as_command('g'+command, False), callback=lambda update,context,cmd=command: gifs.singleGif(update,context,cmd)
+            filters=message_handler_as_command('g'+command, False), 
+            callback=lambda update,context,cmd=command: gifs.singleGif(update,context,cmd),
+            block = False
         )
             
     for v in handlers.values():

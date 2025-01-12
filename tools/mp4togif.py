@@ -40,7 +40,7 @@ def waifu2x_gif(input_folder: str, fps):
             num=i
         )
         print(subprocess.list2cmdline([a.replace("?"," ") for a in command.split(" ")]))
-        subprocess.Popen([a.replace("?"," ") for a in command.split(" ")]).wait()
+        subprocess.Popen([a.replace("?"," ") for a in command.split(" ")], shell=True).wait()
     return make_gif("enhanced",fps=fps)
 
 # TODO: Aggiornare gli argomenti di make_gif in modo da inserire gli fps della gif con get_fps(path)

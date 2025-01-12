@@ -232,9 +232,42 @@ def delete_gif(gif, type_id):
     
     for a in to_delete:
         a.delete_instance(recursive=True)
-    
-    
+
+# Funzione per generare le query INSERT
+def genera_query_insert(model_class):
+    # Ottieni tutte le righe del modello
+    rows = model_class.select()
+
+    # Crea le query INSERT per ogni riga
+    query_insert = []
+    for row in rows:
+        try:
+            valori = ", ".join([f"'{getattr(row, col)}'" if getattr(row, col) is not None else "NULL"
+                            for col in row._meta.fields])
+            query = f"INSERT INTO {model_class._meta.table_name} ({', '.join(row._meta.fields)}) VALUES ({valori});"
+            query_insert.append(query)
+        except:
+            print('idgaf')
+
+    return query_insert
+
+
+
 if __name__ == '__main__':
+    # Esempio di utilizzo
+    db.connect()
+    
+    m = [Gif, Rect]
+    for x in m:
+        queries = genera_query_insert(x)
+
+        # Stampa le query
+        for query in queries:
+            print(query)
+
+    db.close()
+    exit()
+
     import asyncio
     
     try:
