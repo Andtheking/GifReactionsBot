@@ -17,7 +17,7 @@ async def check_for_couple_gif(message: Message):
 
 request_counter = {}
 
-async def ask(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def ask(update: Update, context: ContextTypes.DEFAULT_TYPE, mex:str):
     chi_propone = update.effective_user.id
     chi_riceve = update.effective_message.reply_to_message.from_user.id
 
@@ -26,7 +26,7 @@ async def ask(update: Update, context: ContextTypes.DEFAULT_TYPE):
         request_counter[chi_riceve] = 0
     request_counter[chi_riceve] += 1
 
-    m = await update.effective_message.reply_text("Vuoi accettare l'abbraccio?")
+    m = await update.effective_message.reply_to_message.reply_text(mex)
     # Crea un identificatore univoco per ogni richiesta (contatore incluso)
     richiesta_id = m.id
 
@@ -47,7 +47,7 @@ async def ask(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await m.edit_text(text="Vuoi accettare l'abbraccio?", reply_markup=reply_markup)
+    await m.edit_text(text=mex, reply_markup=reply_markup)
     # Invia il messaggio all'utente ricevente con i bottoni
     
 
@@ -120,12 +120,20 @@ async def singleGif(update:Update, context: ContextTypes.DEFAULT_TYPE, gif_type:
     await m.delete()
 
 
+ASK = ['hug', 'patpat']
+
 async def coupleGif(update:Update, context: ContextTypes.DEFAULT_TYPE, gif_type:str):
     if not await check_for_couple_gif(update.effective_message):
         return
     
-    if not await ask(update, context):
-        return
+    if (gif_type in ASK):
+        if (gif_type == 'hug'):
+            mex = '{utente} vorrebbe abbracciarti...'
+        elif (gif_type == 'patpat'):
+            mex = '{utente} vorrebbe farti patpat...'
+        
+        if not await ask(update, context, mex.format(utente=update.effective_sender.name)):
+            return
     
     m = await update.effective_message.reply_text("Processing...")
     testo = update.effective_message.text
