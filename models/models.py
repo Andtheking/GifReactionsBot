@@ -51,8 +51,10 @@ class Gif(BaseModel):
         
         nomi_nuovi = []
         coord_nuove = []
+        diff = len(nomi) - len(self.rettangoli) 
+        rettangoli = [NotImplemented]*max(0, diff) + self.rettangoli
         
-        for c,n in zip(self.rettangoli, nomi):
+        for c,n in zip(rettangoli, nomi):
             start_coordinates = (c.A_x,c.A_y)  # Coordinate di inizio
             end_coordinates = (c.B_x,c.B_y)  # Coordinate di fine
 
@@ -131,7 +133,7 @@ class Gif(BaseModel):
         nome = f"out{uuid}.gif"
         
         if test:
-            nome = "test_"+self.comando.comando+".gif"
+            nome = "test_"+self.comando.comando+str(self.gif_type_id)+".gif"
         
         frames[0].save(
             'misc/output/'+nome, 
