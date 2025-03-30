@@ -25,7 +25,7 @@ if __name__ == "__main__":
         print("Gif 2 --- %s seconds ---" % (time.time() - start_time))
         
     elif "test" in a:
-        g = Gif.select().join(Comando).where(Comando.comando == a.replace('test','').strip())
+        g: list[Gif] = Gif.select().join(Comando).where(Comando.comando == a.replace('test','').strip())
         for i in g:
             asyncio.run(i.stampaNomi("Andtheking","HypotheticalGirl", test=True))
             
@@ -61,6 +61,7 @@ if __name__ == "__main__":
             gif_type_id=last_gif_id+1
         )
         
+        print(super_big_g.sql())
         
         print("Ok ora prendi le coordinate")
         c = [Rect(gif=super_big_g, A_x = k[0], A_y = k[1], B_x = k[2], B_y = k[3]) for k in gif_coordinates.main(p)]
@@ -70,6 +71,7 @@ if __name__ == "__main__":
         
         super_big_g.save()
         for i in c:
+            print(i.sql())
             i.save()
 
     elif a == "list":
